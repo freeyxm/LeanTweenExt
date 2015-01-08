@@ -109,11 +109,17 @@ public class LeanTweenCommModel
 
     protected virtual void SetExtraOptions(LTDescr ltDescr)
     {
-        ltDescr.setOrientToPath(m_options.orientPath);
-        ltDescr.setOrientToPath2d(m_options.orientPath2d);
-        ltDescr.setUseEstimatedTime(m_options.useEstimatedTime);
-        ltDescr.setUseFrames(m_options.useFrames);
-        ltDescr.setUseManualTime(m_options.useManualTime);
-        ltDescr.setPoint(m_options.point);
+        if (m_options.orientPath)
+            ltDescr.setOrientToPath(m_options.orientPath);
+        if (m_options.orientPath2d)
+            ltDescr.setOrientToPath2d(m_options.orientPath2d);
+        if (m_options.useEstimatedTime)
+            ltDescr.setUseEstimatedTime(m_options.useEstimatedTime);
+        if (m_options.useFrames)
+            ltDescr.setUseFrames(m_options.useFrames);
+        if (m_options.useManualTime)
+            ltDescr.setUseManualTime(m_options.useManualTime);
+        if (!m_options.point.Equals(Vector3.zero))
+            ltDescr.setPoint(m_options.point);
     }
 }
