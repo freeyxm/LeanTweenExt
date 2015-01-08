@@ -8,12 +8,31 @@ using UnityEngine;
 public class LeanTweenCommModel
 {
     [System.Serializable]
-    public struct MethodInfo
+    public struct Method
     {
-        GameObject target;
-        public string name;
+        public GameObject target;
+        public string className;
+        public string methodName;
         public string param;
     }
+    [System.Serializable]
+    public struct Methods
+    {
+        public enum ParamType
+        {
+            Float,
+            Vector3,
+            Color,
+        }
+
+        public Method onUpdate;
+        public ParamType onUpdateType;
+
+        public Method onComplete;
+        public bool onCompleteOnRepeat;
+        public bool onCompleteOnStart;
+    }
+    public Methods m_methods;
 
     public enum LoopType
     {
@@ -105,6 +124,7 @@ public class LeanTweenCommModel
         ltDescr.setLoopType((LeanTweenType)m_loopType);
 
         SetExtraOptions(ltDescr);
+        BindMethods(ltDescr);
     }
 
     protected virtual void SetExtraOptions(LTDescr ltDescr)
@@ -121,5 +141,71 @@ public class LeanTweenCommModel
             ltDescr.setUseManualTime(m_options.useManualTime);
         if (!m_options.point.Equals(Vector3.zero))
             ltDescr.setPoint(m_options.point);
+    }
+
+    protected virtual void BindMethods(LTDescr ltDescr)
+    {
+        {
+            Method method = m_methods.onComplete;
+            object obj = null;
+            System.Reflection.MethodInfo methodInfo = GetMethodInfo(method, ref obj);
+            if (methodInfo != null)
+            {
+                ltDescr.setOnComplete(delegate()
+                {
+                    object[] args = { method.target, method.param };
+                    methodInfo.Invoke(obj, args);
+                });
+                ltDescr.setOnCompleteOnRepeat(m_methods.onCompleteOnRepeat);
+                ltDescr.setOnCompleteOnStart(m_methods.onCompleteOnStart);
+            }
+        }
+        {
+            Method method = m_methods.onUpdate;
+            object obj = null;
+            System.Reflection.MethodInfo methodInfo = GetMethodInfo(method, ref obj);
+            if (methodInfo != null)
+            {
+                switch (m_methods.onUpdateType)
+                {
+                    case Methods.ParamType.Float:
+                        {
+                            ltDescr.setOnUpdate(delegate(float arg)
+                            {
+                                object[] args = { method.target, method.param, arg };
+                                methodInfo.Invoke(obj, args);
+                            });
+                        } break;
+                    case Methods.ParamType.Vector3:
+                        {
+                            ltDescr.setOnUpdateVector3(delegate(Vector3 arg)
+                            {
+                                object[] args = { method.target, method.param, arg };
+                                methodInfo.Invoke(obj, args);
+                            });
+                        }
+                        break;
+                    case Methods.ParamType.Color:
+                        {
+                            ltDescr.setOnUpdateColor(delegate(Color arg)
+                            {
+                                object[] args = { method.target, method.param, arg };
+                                methodInfo.Invoke(obj, args);
+                            });
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
+    protected static System.Reflection.MethodInfo GetMethodInfo(Method method, ref object obj)
+    {
+        if (method.target == null || string.IsNullOrEmpty(method.className) || string.IsNullOrEmpty(method.className))
+            return null;
+        obj = method.target.GetComponent(method.className);
+        if (obj == null)
+            return null;
+        return obj.GetType().GetMethod(method.methodName);
     }
 }
