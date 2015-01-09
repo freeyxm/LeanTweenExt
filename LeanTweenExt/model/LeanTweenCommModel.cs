@@ -201,8 +201,10 @@ public class LeanTweenCommModel
 
     protected static System.Reflection.MethodInfo GetMethodInfo(Method method, ref object obj)
     {
-        if (method.target == null || string.IsNullOrEmpty(method.className) || string.IsNullOrEmpty(method.className))
+        if (method.target == null || string.IsNullOrEmpty(method.className) || string.IsNullOrEmpty(method.methodName))
             return null;
+        method.className = method.className.Trim();
+        method.methodName = method.methodName.Trim();
         obj = method.target.GetComponent(method.className);
         if (obj == null)
             return null;
