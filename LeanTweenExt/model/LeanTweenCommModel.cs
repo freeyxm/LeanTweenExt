@@ -153,7 +153,7 @@ public class LeanTweenCommModel
             {
                 ltDescr.setOnComplete(delegate()
                 {
-                    object[] args = { method.target, method.param };
+                    object[] args = { method.param };
                     methodInfo.Invoke(obj, args);
                 });
                 ltDescr.setOnCompleteOnRepeat(m_methods.onCompleteOnRepeat);
@@ -172,7 +172,7 @@ public class LeanTweenCommModel
                         {
                             ltDescr.setOnUpdate(delegate(float arg)
                             {
-                                object[] args = { method.target, method.param, arg };
+                                object[] args = { method.param, arg };
                                 methodInfo.Invoke(obj, args);
                             });
                         } break;
@@ -180,7 +180,7 @@ public class LeanTweenCommModel
                         {
                             ltDescr.setOnUpdateVector3(delegate(Vector3 arg)
                             {
-                                object[] args = { method.target, method.param, arg };
+                                object[] args = { method.param, arg };
                                 methodInfo.Invoke(obj, args);
                             });
                         }
@@ -189,7 +189,7 @@ public class LeanTweenCommModel
                         {
                             ltDescr.setOnUpdateColor(delegate(Color arg)
                             {
-                                object[] args = { method.target, method.param, arg };
+                                object[] args = { method.param, arg };
                                 methodInfo.Invoke(obj, args);
                             });
                         }
