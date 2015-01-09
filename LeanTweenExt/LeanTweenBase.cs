@@ -8,11 +8,7 @@ public class LeanTweenBase : MonoBehaviour
 {
     public string m_name;
 
-    protected virtual void Start()
-    { 
-    }
-
-    public virtual bool StartITweenAction(string name)
+    public virtual bool StartLeanTweenAction(string name)
     {
         return (string.IsNullOrEmpty(m_name) || m_name.Equals(name) || "_ALL_".Equals(name));
     }
