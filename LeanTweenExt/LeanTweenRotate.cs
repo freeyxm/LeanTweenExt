@@ -10,19 +10,14 @@ public class LeanTweenRotate : LeanTweenBase
 
     public override bool StartLeanTweenAction(string name)
     {
-        bool flag = base.StartLeanTweenAction(name);
-        if (flag)
+        bool bStart = base.StartLeanTweenAction(name);
+        if (bStart)
         {
             for (int i = 0; i < m_actions.Length; ++i)
             {
                 m_actions[i].DoAction(this.gameObject);
             }
         }
-        return flag;
-    }
-
-    void OnEnable()
-    {
-        StartLeanTweenAction("");
+        return bStart;
     }
 }

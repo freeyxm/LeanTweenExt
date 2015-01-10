@@ -55,6 +55,7 @@ public class LeanTweenCommTranModel : LeanTweenCommModel
     protected virtual void SetOptions(LTDescr ltDescr)
     {
         base.SetOptions(ltDescr);
-        ltDescr.setFrom(m_from.from);
+        if (m_from.enable)
+            ltDescr.setFrom(m_from.from);
     }
 }

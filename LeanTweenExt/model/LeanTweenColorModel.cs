@@ -13,7 +13,7 @@ public class LeanTweenColorModel : LeanTweenCommModel
         public bool enable = false;
         public Color from;
     }
-    public FromColor m_fromColor;
+    public FromColor m_fromColor; // Is useful or not ???
 
     /// <summary>
     /// the final color value ex: Color.Red, new Color(1.0f,1.0f,0.0f,0.8f)
@@ -23,7 +23,8 @@ public class LeanTweenColorModel : LeanTweenCommModel
     protected virtual void SetOptions(LTDescr ltDescr)
     {
         base.SetOptions(ltDescr);
-        ltDescr.setFromColor(m_fromColor.from);
+        if (m_fromColor.enable)
+            ltDescr.setFromColor(m_fromColor.from);
     }
 
     public override void DoAction(GameObject go)
